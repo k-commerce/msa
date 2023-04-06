@@ -1,0 +1,16 @@
+.idea
+server-*/HELP.md
+server-*/.gradle
+server-*/build/
+server-*/!gradle/wrapper/gradle-wrapper.jar
+server-*/!**/src/main/**/build/
+server-*/!**/src/test/**/build/
+server-*/.idea
+server-*/*.iws
+server-*/*.iml
+server-*/*.ipr
+server-*/out/
+server-*/!**/src/main/**/out/
+server-*/!**/src/test/**/out/
+server-*/src/main/generated/
+server-*/src/main/resources/application-local.yml
