@@ -2,14 +2,14 @@ package com.kcommerce;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 @SpringBootApplication
-@EnableJpaAuditing
-public class KCommerceApplication {
+@EnableEurekaClient
+public class ServerGateway {
 
     public static void main(String[] args) {
-        SpringApplication.run(KCommerceApplication.class, args);
+        SpringApplication.run(ServerGateway.class, args);
     }
 
 }

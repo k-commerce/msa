@@ -3,6 +3,7 @@ buildscript {
         jwtVersion = "0.11.5"
         mapstructVersion = "1.5.3.Final"
         querydslVersion = "5.0.0"
+        springCloudVersion = "2021.0.1"
     }
 }
 
@@ -54,6 +55,9 @@ dependencies {
     // querydsl
     implementation "com.querydsl:querydsl-jpa:${querydslVersion}"
     annotationProcessor "com.querydsl:querydsl-apt:${querydslVersion}"
+
+    // eureka-client
+    implementation "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client"
 }
 
 tasks.named("test") {
@@ -71,4 +75,11 @@ sourceSets {
 }
 compileQuerydsl {
     options.annotationProcessorPath = configurations.querydsl
+}
+
+// spring cloud
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
 }
