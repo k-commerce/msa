@@ -59,7 +59,7 @@ export default {
     }
   },
   created () {
-    this.itemId = this.$route.params.id
+    this.itemId = parseInt(this.$route.params.id)
     this.getItem()
   }
 }

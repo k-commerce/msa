@@ -58,7 +58,9 @@ export default {
       this.menu = 0
     },
     search () {
-      this.$router.push({ name: 'itemList', query: { name: this.name } })
+      if (this.name) {
+        this.$router.push({ name: 'itemList', query: { name: this.name } })
+      }
     }
   }
 }

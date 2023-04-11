@@ -70,8 +70,11 @@ export default {
         }
       }).then(response => {
         if (response.status === 200) {
-          this.itemList = response.data
-          this.cursorId = Math.max.apply(null, this.itemList.map(x => x.id))
+          const itemList = response.data
+          if (itemList.length) {
+            this.itemList.push(...itemList)
+            this.cursorId = Math.max(...itemList.map(x => x.id))
+          }
         }
       })
     },
@@ -90,8 +93,8 @@ export default {
   },
   created () {
     this.name = this.$route.query.name
-    this.categoryId = this.$route.query.categoryId
-    if (this.categoryId) {
+    if (this.$route.query.categoryId) {
+      this.categoryId = parseInt(this.$route.query.categoryId)
       this.getCategoryList()
     }
     this.getItemList()
