@@ -3,7 +3,6 @@ package com.kcommerce.domain.item.service;
 import com.kcommerce.domain.item.domain.Item;
 import com.kcommerce.domain.item.dto.ItemDto;
 import com.kcommerce.domain.item.mapper.ItemMapper;
-import com.kcommerce.domain.item.repository.CategoryItemRepository;
 import com.kcommerce.domain.item.repository.ItemRepository;
 import com.kcommerce.global.error.exception.BusinessException;
 import com.kcommerce.global.error.exception.ErrorCode;
@@ -18,12 +17,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ItemService {
 
-    private final CategoryItemRepository categoryItemRepository;
     private final ItemRepository itemRepository;
     private final ItemMapper itemMapper;
 
     public List<ItemDto.Response> getItemList(ItemDto.ItemSearchCondition itemSearchCondition) {
-        List<Item> itemList = categoryItemRepository.searchItem(itemSearchCondition);
+        List<Item> itemList = itemRepository.searchItem(itemSearchCondition);
         if (itemList.isEmpty()) {
             throw new BusinessException(ErrorCode.ITEM_NOT_FOUND);
         }

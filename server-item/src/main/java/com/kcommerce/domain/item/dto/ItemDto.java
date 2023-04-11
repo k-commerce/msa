@@ -22,6 +22,8 @@ public class ItemDto {
     @Setter
     public static class ItemSearchCondition {
 
+        private Long cursorId;
+        private String name;
         private Long categoryId;
         private List<Long> itemIdList;
     }

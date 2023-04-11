@@ -24,7 +24,7 @@
 export default {
   data () {
     return {
-      cursorId: 0,
+      cursorId: null,
       name: null,
       categoryId: null,
       category: null,

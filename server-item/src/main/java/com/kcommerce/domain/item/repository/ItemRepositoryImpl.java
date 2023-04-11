@@ -9,21 +9,25 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 
 import static com.kcommerce.domain.item.domain.QCategoryItem.categoryItem;
+import static com.kcommerce.domain.item.domain.QItem.item;
 
 @RequiredArgsConstructor
-public class CategoryItemRepositoryImpl implements CategoryItemRepositoryCustom {
+public class ItemRepositoryImpl implements ItemRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
 
     @Override
     public List<Item> searchItem(ItemDto.ItemSearchCondition itemSearchCondition) {
         return queryFactory
-                .select(categoryItem.item)
-                .from(categoryItem)
+                .select(item)
+                .from(itemSearchCondition.getCategoryId() != null ? categoryItem : item)
                 .where(
+                        gtCursorId(itemSearchCondition.getCursorId()),
                         eqCategoryId(itemSearchCondition.getCategoryId()),
-                        eqItemIdList(itemSearchCondition.getItemIdList())
+                        inItemIdList(itemSearchCondition.getItemIdList()),
+                        containsName(itemSearchCondition.getName())
                 )
+                .limit(10)
                 .fetch();
     }
 
@@ -31,7 +35,15 @@ public class CategoryItemRepositoryImpl implements CategoryItemRepositoryCustom 
         return categoryId != null ? categoryItem.category.id.eq(categoryId) : null;
     }
 
-    private BooleanExpression eqItemIdList(List<Long> itemIdList) {
-        return itemIdList != null ? categoryItem.item.id.in(itemIdList) : null;
+    private BooleanExpression inItemIdList(List<Long> itemIdList) {
+        return itemIdList != null ? item.id.in(itemIdList) : null;
+    }
+
+    private BooleanExpression containsName(String name) {
+        return name != null ? item.name.contains(name) : null;
+    }
+
+    private BooleanExpression gtCursorId(Long cursorId) {
+        return cursorId != null ? item.id.gt(cursorId) : null;
     }
 }
