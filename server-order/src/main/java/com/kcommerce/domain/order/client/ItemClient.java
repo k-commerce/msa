@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-@FeignClient(name = "server-item", url = "${server-gateway.url}")
+@FeignClient(name = "ItemClient", url = "${server-gateway.url}", fallbackFactory = ItemClientFallbackFactory.class)
 public interface ItemClient {
 
     @GetMapping("/api/items")

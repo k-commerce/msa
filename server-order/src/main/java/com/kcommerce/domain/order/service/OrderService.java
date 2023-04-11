@@ -38,6 +38,9 @@ public class OrderService {
 
         List<Long> itemIdList = new ArrayList<>(orderCheck.keySet());
         List<Item> itemList = itemClient.getItemList(itemIdList);
+        if (itemList.isEmpty()) {
+            throw new BusinessException(ErrorCode.TIMEOUT);
+        }
 
         Order order = orderMapper.toEntity(memberId, orderDto);
         orderRepository.save(order);
