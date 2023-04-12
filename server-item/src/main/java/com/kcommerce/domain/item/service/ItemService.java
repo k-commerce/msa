@@ -22,9 +22,6 @@ public class ItemService {
 
     public List<ItemDto.Response> getItemList(ItemDto.ItemSearchCondition itemSearchCondition) {
         List<Item> itemList = itemRepository.searchItem(itemSearchCondition);
-        if (itemList.isEmpty()) {
-            throw new BusinessException(ErrorCode.ITEM_NOT_FOUND);
-        }
         return itemMapper.toDtoList(itemList);
     }
 

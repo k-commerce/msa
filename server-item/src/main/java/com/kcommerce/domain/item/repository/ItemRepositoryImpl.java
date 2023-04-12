@@ -22,7 +22,7 @@ public class ItemRepositoryImpl implements ItemRepositoryCustom {
                 .select(item)
                 .from(itemSearchCondition.getCategoryId() != null ? categoryItem : item)
                 .where(
-                        gtCursorId(itemSearchCondition.getCursorId()),
+                        gtCursorId(itemSearchCondition.getCursorId(), itemSearchCondition.getCategoryId()),
                         eqCategoryId(itemSearchCondition.getCategoryId()),
                         inItemIdList(itemSearchCondition.getItemIdList()),
                         containsName(itemSearchCondition.getName())
@@ -43,7 +43,7 @@ public class ItemRepositoryImpl implements ItemRepositoryCustom {
         return name != null ? item.name.contains(name) : null;
     }
 
-    private BooleanExpression gtCursorId(Long cursorId) {
-        return cursorId != null ? item.id.gt(cursorId) : null;
+    private BooleanExpression gtCursorId(Long cursorId, Long categoryId) {
+        return cursorId != null ? (categoryId != null ? categoryItem.item.id.gt(cursorId) : item.id.gt(cursorId)) : null;
     }
 }
