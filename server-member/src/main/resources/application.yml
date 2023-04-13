@@ -1,3 +1,9 @@
 spring:
   profiles:
     active: local
+
+  application:
+    name: server-member
+
+  jpa:
+    open-in-view: false
