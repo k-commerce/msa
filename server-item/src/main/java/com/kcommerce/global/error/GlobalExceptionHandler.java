@@ -4,7 +4,6 @@ import com.kcommerce.global.error.exception.BusinessException;
 import com.kcommerce.global.error.exception.ErrorCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -22,17 +21,6 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(errorCode.getStatus())
                 .body(ErrorResponse.of(errorCode, e.getBindingResult()));
-    }
-
-    // 400
-    @ExceptionHandler(BadCredentialsException.class)
-    private ResponseEntity<ErrorResponse> handleBadCredentialsException(BadCredentialsException e) {
-        log.error("handleBadCredentialsException", e);
-
-        ErrorCode errorCode = ErrorCode.BAD_CREDENTIALS;
-
-        return ResponseEntity.status(errorCode.getStatus())
-                .body(ErrorResponse.of(errorCode));
     }
 
     // 500

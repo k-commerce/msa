@@ -4,7 +4,6 @@ import com.kcommerce.domain.member.dto.AddressDto;
 import com.kcommerce.domain.member.service.AddressService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -19,13 +18,13 @@ public class AddressController {
 
     @PostMapping
     public ResponseEntity<Void> createAddress(@RequestBody @Valid AddressDto addressDto,
-                                              @AuthenticationPrincipal Long memberId) {
+                                              @RequestHeader("X-Authorization-Id") Long memberId) {
         addressService.createAddress(addressDto, memberId);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping
-    public ResponseEntity<List<AddressDto>> getAddressList(@AuthenticationPrincipal Long memberId) {
+    public ResponseEntity<List<AddressDto>> getAddressList(@RequestHeader("X-Authorization-Id") Long memberId) {
         List<AddressDto> addressDtoList = addressService.getAddressList(memberId);
         return ResponseEntity.ok(addressDtoList);
     }
@@ -33,14 +32,14 @@ public class AddressController {
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateAddress(@PathVariable Long id,
                                               @RequestBody @Valid AddressDto addressDto,
-                                              @AuthenticationPrincipal Long memberId) {
+                                              @RequestHeader("X-Authorization-Id") Long memberId) {
         addressService.updateAddress(id, addressDto, memberId);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAddress(@PathVariable Long id,
-                                              @AuthenticationPrincipal Long memberId) {
+                                              @RequestHeader("X-Authorization-Id") Long memberId) {
         addressService.deleteAddress(id, memberId);
         return ResponseEntity.ok().build();
     }

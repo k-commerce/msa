@@ -5,7 +5,6 @@ import com.kcommerce.domain.order.dto.OrderItemDto;
 import com.kcommerce.domain.order.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -19,20 +18,20 @@ public class OrderController {
 
     @PostMapping("/api/orders")
     public ResponseEntity<Void> createOrder(@RequestBody @Valid OrderDto.Request orderDto,
-                                            @AuthenticationPrincipal Long memberId) {
+                                            @RequestHeader("X-Authorization-Id") Long memberId) {
         orderService.createOrder(orderDto, memberId);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/api/orders")
-    public ResponseEntity<List<OrderDto.Response>> getOrderHistory(@AuthenticationPrincipal Long memberId) {
+    public ResponseEntity<List<OrderDto.Response>> getOrderHistory(@RequestHeader("X-Authorization-Id") Long memberId) {
         return ResponseEntity.ok(orderService.getOrderHistory(memberId));
     }
 
     @PutMapping("/api/orders/{orderId}")
     public ResponseEntity<Void> updateOrderItemStatus(@PathVariable Long orderId,
                                                       @RequestBody OrderItemDto.Request orderItemDto,
-                                                      @AuthenticationPrincipal Long memberId) {
+                                                      @RequestHeader("X-Authorization-Id") Long memberId) {
         orderService.updateOrderItemStatus(memberId, orderId, orderItemDto.getId());
         return ResponseEntity.ok().build();
     }

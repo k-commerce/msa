@@ -12,13 +12,22 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api/members")
 @RequiredArgsConstructor
 public class MemberController {
 
     private final MemberService memberService;
 
     @PostMapping
+    @RequestMapping("/api/auth")
+    public ResponseEntity<MemberDto> login(@RequestBody @Valid MemberDto.LoginRequest request) {
+        MemberDto memberDto = memberService.login(request);
+        return ResponseEntity.ok()
+                .header("X-Authorization-Id", String.valueOf(memberDto.getId()))
+                .body(memberDto);
+    }
+
+    @PostMapping
+    @RequestMapping("/api/members")
     public ResponseEntity<Void> join(@RequestBody @Valid MemberDto.JoinRequest request) {
         memberService.join(request);
         return ResponseEntity.ok().build();

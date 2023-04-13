@@ -8,10 +8,10 @@ import lombok.RequiredArgsConstructor;
 public enum ErrorCode {
 
     METHOD_ARGUMENT_NOT_VALID(400, "METHOD_ARGUMENT_NOT_VALID", "유효성 검증에 실패하였습니다."),
-    BAD_CREDENTIALS(400, "BAD_CREDENTIALS", "로그인에 실패하였습니다."),
     INTERNAL_SERVER_ERROR(500, "INTERNAL_SERVER_ERROR", "서버에 문제가 발생하였습니다."),
 
     // Member
+    BAD_CREDENTIALS(400, "BAD_CREDENTIALS", "로그인에 실패하였습니다."),
     USERNAME_DUPLICATE(400, "USERNAME_DUPLICATE", "이미 존재하는 아이디입니다."),
 
     // Address
@@ -22,6 +22,7 @@ public enum ErrorCode {
     CHECK_MEMBER(400, "CHECK_MEMBER", "로그인된 회원과 주문자가 일치하지 않습니다."),
     ORDER_ITEM_NOT_FOUND(404, "ORDER_ITEM_NOT_FOUND", "주문한 상품을 찾을 수 없습니다."),
     ORDER_NOT_FOUND(404, "ORDER_NOT_FOUND", "주문을 찾을 수 없습니다."),
+    TIMEOUT(500, "TIMEOUT", "서비스 이용이 지연되고 있습니다. 잠시 후 다시 이용해 주시기 바랍니다."),
 
     // Item
     ITEM_NOT_FOUND(404, "ITEM_NOT_FOUND", "상품을 찾을 수 없습니다."),
