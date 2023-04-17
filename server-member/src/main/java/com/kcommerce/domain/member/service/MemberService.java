@@ -7,10 +7,10 @@ import com.kcommerce.domain.member.repository.MemberRepository;
 import com.kcommerce.global.error.exception.BusinessException;
 import com.kcommerce.global.error.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Objects;
 
 @Service
 @Transactional(readOnly = true)
@@ -19,16 +19,17 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final MemberMapper memberMapper;
+    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public MemberDto login(MemberDto.LoginRequest request) {
         Member member = memberRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new BusinessException(ErrorCode.BAD_CREDENTIALS));
-        validatePassword(member, request);
+        validatePassword(request.getPassword(), member.getPassword());
         return memberMapper.toDto(member);
     }
 
-    private void validatePassword(Member member, MemberDto.LoginRequest request) {
-        if (!Objects.equals(member.getPassword(), request.getPassword())) {
+    private void validatePassword(String rawPassword, String encodedPassword) {
+        if (!passwordEncoder.matches(rawPassword, encodedPassword)) {
             throw new BusinessException(ErrorCode.BAD_CREDENTIALS);
         }
     }
@@ -37,6 +38,8 @@ public class MemberService {
     public void join(MemberDto.JoinRequest request) {
         validateDuplicate(request.getUsername());
         Member member = memberMapper.toEntity(request);
+        String encodedPassword = passwordEncoder.encode(request.getPassword());
+        member.changePassword(encodedPassword);
         memberRepository.save(member);
     }
 
