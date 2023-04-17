@@ -1,4 +1,4 @@
-package com.kcommerce;
+package com.kcommerce.config;
 
 import com.kcommerce.jwt.AuthenticationGatewayFilterFactory;
 import com.kcommerce.jwt.AuthorizationGatewayFilterFactory;
@@ -35,12 +35,31 @@ public class GatewayConfig {
                                 .uri("lb://server-member")
                 )
                 .route(
-                        r -> r.path("/api/items/**", "/api/categories/**")
+                        r -> r.path("/api/items/**")
+                                .uri("lb://server-item")
+                )
+                .route(
+                        r -> r.path("/api/categories/**")
                                 .uri("lb://server-item")
                 )
                 .route(
                         r -> r.path("/api/orders/**")
                                 .filters(f -> f.filter(authorizationGatewayFilter))
+                                .uri("lb://server-order")
+                )
+                .route(
+                        r -> r.path("/v3/api-docs/member")
+                                .filters(f -> f.rewritePath("/v3/api-docs/member", "/v3/api-docs"))
+                                .uri("lb://server-member")
+                )
+                .route(
+                        r -> r.path("/v3/api-docs/item")
+                                .filters(f -> f.rewritePath("/v3/api-docs/item", "/v3/api-docs"))
+                                .uri("lb://server-item")
+                )
+                .route(
+                        r -> r.path("/v3/api-docs/order")
+                                .filters(f -> f.rewritePath("/v3/api-docs/order", "/v3/api-docs"))
                                 .uri("lb://server-order")
                 )
                 .build();

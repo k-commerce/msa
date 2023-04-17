@@ -1,8 +1,9 @@
 buildscript {
     ext {
         mapstructVersion = "1.5.3.Final"
-        querydslVersion = "5.0.0"
+        springdocVersion = "1.6.14"
         springCloudVersion = "2021.0.1"
+        querydslVersion = "5.0.0"
     }
 }
 
@@ -10,7 +11,6 @@ plugins {
     id "java"
     id "org.springframework.boot" version "2.7.9"
     id "io.spring.dependency-management" version "1.0.15.RELEASE"
-    // querydsl
     id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 }
 
@@ -22,7 +22,6 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
-    // querydsl
     querydsl.extendsFrom compileClasspath
 }
 
@@ -30,26 +29,39 @@ repositories {
     mavenCentral()
 }
 
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
 dependencies {
+    // spring-boot
     implementation "org.springframework.boot:spring-boot-starter-data-jpa"
     implementation "org.springframework.boot:spring-boot-starter-validation"
     implementation "org.springframework.boot:spring-boot-starter-web"
-    compileOnly "org.projectlombok:lombok"
-    developmentOnly "org.springframework.boot:spring-boot-devtools"
-    runtimeOnly "com.mysql:mysql-connector-j"
-    annotationProcessor "org.projectlombok:lombok"
     testImplementation "org.springframework.boot:spring-boot-starter-test"
+
+    // lombok
+    compileOnly "org.projectlombok:lombok"
+    annotationProcessor "org.projectlombok:lombok"
+
+    // mysql
+    runtimeOnly "com.mysql:mysql-connector-j"
 
     // mapstruct
     implementation "org.mapstruct:mapstruct:${mapstructVersion}"
     annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
 
+    // springdoc
+    implementation "org.springdoc:springdoc-openapi-webmvc-core:${springdocVersion}"
+
+    // spring-cloud
+    implementation "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client"
+
     // querydsl
     implementation "com.querydsl:querydsl-jpa:${querydslVersion}"
     annotationProcessor "com.querydsl:querydsl-apt:${querydslVersion}"
-
-    // eureka-client
-    implementation "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client"
 }
 
 tasks.named("test") {
@@ -67,11 +79,4 @@ sourceSets {
 }
 compileQuerydsl {
     options.annotationProcessorPath = configurations.querydsl
-}
-
-// spring cloud
-dependencyManagement {
-    imports {
-        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-    }
 }

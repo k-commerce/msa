@@ -10,6 +10,14 @@ plugins {
     id "io.spring.dependency-management" version "1.0.15.RELEASE"
 }
 
+group = "com.kcommerce"
+version = "0.0.1-SNAPSHOT"
+sourceCompatibility = "17"
+
+repositories {
+    mavenCentral()
+}
+
 dependencyManagement {
     imports {
         mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
@@ -17,13 +25,6 @@ dependencyManagement {
 }
 
 dependencies {
+    // spring-cloud
     implementation "org.springframework.cloud:spring-cloud-starter-netflix-eureka-server"
 }
-
-repositories {
-    mavenCentral()
-}
-
-group = "com.kcommerce"
-version = "0.0.1-SNAPSHOT"
-sourceCompatibility = "17"
