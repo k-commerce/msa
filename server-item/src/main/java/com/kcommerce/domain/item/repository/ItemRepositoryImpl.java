@@ -23,12 +23,20 @@ public class ItemRepositoryImpl implements ItemRepositoryCustom {
                 .from(itemSearchCondition.getCategoryId() != null ? categoryItem : item)
                 .where(
                         gtCursorId(itemSearchCondition.getCursorId(), itemSearchCondition.getCategoryId()),
+                        containsName(itemSearchCondition.getName()),
                         eqCategoryId(itemSearchCondition.getCategoryId()),
-                        inItemIdList(itemSearchCondition.getItemIdList()),
-                        containsName(itemSearchCondition.getName())
+                        inItemIdList(itemSearchCondition.getItemIdList())
                 )
                 .limit(10)
                 .fetch();
+    }
+
+    private BooleanExpression gtCursorId(Long cursorId, Long categoryId) {
+        return cursorId != null ? (categoryId != null ? categoryItem.item.id.gt(cursorId) : item.id.gt(cursorId)) : null;
+    }
+
+    private BooleanExpression containsName(String name) {
+        return name != null ? item.name.contains(name) : null;
     }
 
     private BooleanExpression eqCategoryId(Long categoryId) {
@@ -37,13 +45,5 @@ public class ItemRepositoryImpl implements ItemRepositoryCustom {
 
     private BooleanExpression inItemIdList(List<Long> itemIdList) {
         return itemIdList != null ? item.id.in(itemIdList) : null;
-    }
-
-    private BooleanExpression containsName(String name) {
-        return name != null ? item.name.contains(name) : null;
-    }
-
-    private BooleanExpression gtCursorId(Long cursorId, Long categoryId) {
-        return cursorId != null ? (categoryId != null ? categoryItem.item.id.gt(cursorId) : item.id.gt(cursorId)) : null;
     }
 }
