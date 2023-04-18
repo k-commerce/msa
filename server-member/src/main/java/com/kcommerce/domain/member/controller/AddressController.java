@@ -17,9 +17,9 @@ public class AddressController {
     private final AddressService addressService;
 
     @PostMapping
-    public ResponseEntity<Void> createAddress(@RequestBody @Valid AddressDto addressDto,
+    public ResponseEntity<Void> createAddress(@RequestBody @Valid AddressDto.Request request,
                                               @RequestHeader("X-Authorization-Id") Long memberId) {
-        addressService.createAddress(addressDto, memberId);
+        addressService.createAddress(request, memberId);
         return ResponseEntity.ok().build();
     }
 
@@ -31,9 +31,9 @@ public class AddressController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateAddress(@PathVariable Long id,
-                                              @RequestBody @Valid AddressDto addressDto,
+                                              @RequestBody @Valid AddressDto.Request request,
                                               @RequestHeader("X-Authorization-Id") Long memberId) {
-        addressService.updateAddress(id, addressDto, memberId);
+        addressService.updateAddress(id, request, memberId);
         return ResponseEntity.ok().build();
     }
 

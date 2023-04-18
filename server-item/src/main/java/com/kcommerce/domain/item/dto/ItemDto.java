@@ -6,17 +6,14 @@ import lombok.Setter;
 
 import java.util.List;
 
+@Getter
+@Builder
 public class ItemDto {
 
-    @Getter
-    @Builder
-    public static class Response {
-
-        private Long id;
-        private String name;
-        private int price;
-        private String description;
-    }
+    private Long id;
+    private String name;
+    private int price;
+    private String description;
 
     @Getter
     @Setter

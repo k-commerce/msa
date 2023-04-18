@@ -13,11 +13,11 @@ import java.util.List;
 public interface AddressMapper {
 
     @Mapping(target = "member", source = "member")
-    @Mapping(target = "name", source = "addressDto.name")
-    @Mapping(target = "address.postcode", source = "addressDto.postcode")
-    @Mapping(target = "address.selected", source = "addressDto.selected")
-    @Mapping(target = "address.detailed", source = "addressDto.detailed")
-    AddressEntity toEntity(AddressDto addressDto, Member member);
+    @Mapping(target = "name", source = "request.name")
+    @Mapping(target = "address.postcode", source = "request.postcode")
+    @Mapping(target = "address.selected", source = "request.selected")
+    @Mapping(target = "address.detailed", source = "request.detailed")
+    AddressEntity toEntity(AddressDto.Request request, Member member);
 
     List<AddressDto> toDtoList(List<AddressEntity> addressEntityList);
 
@@ -26,5 +26,5 @@ public interface AddressMapper {
     @Mapping(target = "detailed", source = "address.detailed")
     AddressDto toDto(AddressEntity addressEntity);
 
-    Address toVo(AddressDto addressDto);
+    Address toVo(AddressDto.Request request);
 }

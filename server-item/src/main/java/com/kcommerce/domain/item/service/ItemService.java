@@ -20,12 +20,12 @@ public class ItemService {
     private final ItemRepository itemRepository;
     private final ItemMapper itemMapper;
 
-    public List<ItemDto.Response> getItemList(ItemDto.ItemSearchCondition itemSearchCondition) {
+    public List<ItemDto> getItemList(ItemDto.ItemSearchCondition itemSearchCondition) {
         List<Item> itemList = itemRepository.searchItem(itemSearchCondition);
         return itemMapper.toDtoList(itemList);
     }
 
-    public ItemDto.Response getItem(Long itemId) {
+    public ItemDto getItem(Long itemId) {
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.ITEM_NOT_FOUND));
         return itemMapper.toDto(item);

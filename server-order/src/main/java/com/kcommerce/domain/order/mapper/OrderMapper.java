@@ -25,5 +25,5 @@ public interface OrderMapper {
     @Mapping(target = "payment", source = "order.payment")
     @Mapping(target = "createdDate", source = "order.createdDate")
     @Mapping(target = "orderItemList", source = "orderItemDtoList")
-    OrderDto.Response toDto(Order order, List<OrderItemDto.Response> orderItemDtoList);
+    OrderDto toDto(Order order, List<OrderItemDto> orderItemDtoList);
 }

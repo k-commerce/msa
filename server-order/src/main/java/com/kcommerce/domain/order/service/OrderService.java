@@ -33,8 +33,8 @@ public class OrderService {
     private final OrderItemMapper orderItemMapper;
     private final ItemClient itemClient;
 
-    public void createOrder(OrderDto.Request orderDto, Long memberId) {
-        Map<Long, Integer> orderCheck = orderDto.getOrderCheck();
+    public void createOrder(OrderDto.Request request, Long memberId) {
+        Map<Long, Integer> orderCheck = request.getOrderCheck();
 
         List<Long> itemIdList = new ArrayList<>(orderCheck.keySet());
         List<Item> itemList = itemClient.getItemList(itemIdList);
@@ -42,7 +42,7 @@ public class OrderService {
             throw new BusinessException(ErrorCode.TIMEOUT);
         }
 
-        Order order = orderMapper.toEntity(memberId, orderDto);
+        Order order = orderMapper.toEntity(memberId, request);
         orderRepository.save(order);
 
         for (Item item : itemList) {
@@ -58,7 +58,7 @@ public class OrderService {
     }
 
     @Transactional(readOnly = true)
-    public List<OrderDto.Response> getOrderHistory(Long memberId) {
+    public List<OrderDto> getOrderHistory(Long memberId) {
         List<OrderItem> orderItemList = orderItemRepository.findOrderItemByMemberId(memberId);
 
         Map<Order, List<OrderItem>> orderMap = orderItemList.stream()
@@ -68,7 +68,7 @@ public class OrderService {
                 .stream()
                 .map(order -> {
                     List<OrderItem> entityList = orderMap.get(order);
-                    List<OrderItemDto.Response> dtoList = orderItemMapper.toDtoList(entityList);
+                    List<OrderItemDto> dtoList = orderItemMapper.toDtoList(entityList);
                     return orderMapper.toDto(order, dtoList);
                 }).toList();
     }
