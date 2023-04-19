@@ -8,6 +8,14 @@ spring:
   jpa:
     open-in-view: false
 
+server:
+  port: 8085
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8082/eureka/
+
 feign:
   circuitbreaker:
     enabled: true
