@@ -1,6 +1,6 @@
 <template>
   <main class="item" v-if="item">
-    <img src="@/assets/images/git.png" />
+    <img />
 
     <div>
       <span>{{ item.name }}</span>
